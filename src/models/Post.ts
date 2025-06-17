@@ -1,17 +1,17 @@
-import { Schema, model, Document } from 'mongoose';
+// ไฟล์: travel-journal-backend/src/models/Post.ts
 
-// กำหนด Type ของ Document สำหรับโพสต์
+import { Schema, model, Document, CallbackWithoutResultAndOptionalError } from 'mongoose'; // <<< เพิ่ม CallbackWithoutResultAndOptionalError
+
 export interface IPost extends Document {
   title: string;
   content: string;
-  imageUrl?: string; // URL ของรูปภาพ (อาจจะมีหรือไม่มีก็ได้)
-  location?: string; // สถานที่ (เป็นทางเลือก)
-  tags?: string[]; // หมวดหมู่/แท็ก (เป็นทางเลือก)
+  imageUrl?: string;
+  location?: string;
+  tags?: string[];
   createdAt: Date;
   updatedAt: Date;
 }
 
-// กำหนด Schema สำหรับ Post
 const PostSchema = new Schema<IPost>({
   title: { type: String, required: true },
   content: { type: String, required: true },
@@ -22,13 +22,12 @@ const PostSchema = new Schema<IPost>({
   updatedAt: { type: Date, default: Date.now }
 });
 
-// อัปเดต updatedAt ทุกครั้งที่มีการบันทึก
-PostSchema.pre('save', function(next) {
+// แก้ไขตรงนี้: ระบุ Type ให้ next และ this
+PostSchema.pre('save', function(next: CallbackWithoutResultAndOptionalError) {
   this.updatedAt = new Date();
   next();
 });
 
-// สร้างและ export Model
 const Post = model<IPost>('Post', PostSchema);
 
 export default Post;
