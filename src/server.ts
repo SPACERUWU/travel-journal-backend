@@ -32,7 +32,10 @@ const upload = multer({ storage: storage });
 // Middleware
 app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:5173', // ตรวจสอบพอร์ต Frontend ของคุณ
+  origin: [
+    'http://localhost:5173', // สำหรับ Local Development
+    'https://spc-travel-journal-frontend-7le5tey4h-spacers-projects-ce95e77e.vercel.app', 
+  ], // ตรวจสอบพอร์ต Frontend ของคุณ
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
